@@ -15,7 +15,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/sejal1011/reddit-clone-k8s-ingress.git'
+                git branch: 'main', url: 'https://github.com/Dinesh-Arivu/Reddit-Clone-App-Deployment-A-DevSecOps-Approach-with-Terraform-and-Jenkins-CI-CD.git'
             }
         }
         stage("Sonarqube Analysis "){
@@ -54,20 +54,20 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
                        sh "docker build -t reddit ."
-                       sh "docker tag reddit sevenajay/reddit:latest "
-                       sh "docker push sevenajay/reddit:latest "
+                       sh "docker tag reddit dinesh1097/reddit:latest "
+                       sh "docker push dinesh1097/reddit:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image sevenajay/reddit:latest > trivy.txt"
+                sh "trivy image dinesh1097/reddit:latest > trivy.txt"
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name reddit -p 3000:3000 sevenajay/reddit:latest'
+                sh 'docker run -d --name reddit -p 3000:3000 dinesh1097/reddit:latest'
             }
         }
         stage('Deploy to kubernets'){
