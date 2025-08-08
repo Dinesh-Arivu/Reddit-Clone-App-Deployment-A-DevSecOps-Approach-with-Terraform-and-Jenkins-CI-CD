@@ -62,7 +62,7 @@ pipeline{
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image dinesh1097/reddit:latest > trivy.txt"
+                sh "trivy image dinesh1097/reddit:latest > trivyimage.txt"
             }
         }
         stage('Deploy to container'){
@@ -73,12 +73,13 @@ pipeline{
         stage('Deploy to kubernets'){
             steps{
                 script{
-                  dir('K8S') {
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                       sh 'kubectl apply -f deployment.yml'
-                       sh 'kubectl apply -f service.yml'
-                       sh 'kubectl apply -f ingress.yml'
-                  }
+                    dir('K8S') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                                sh 'kubectl apply -f deployment.yml'
+                                sh 'kubectl apply -f service.yml'
+                                sh 'kubectl apply -f ingress.yml'
+                        }
+                    }
                 }
             }
         }
